@@ -1,0 +1,60 @@
+# Translation of the WordPress plugin Logout Redirect 1.0.1 by Andrew Billits, Ulrich Sossou.
+# Copyright (C) 2011 Andrew Billits, Ulrich Sossou
+# This file is distributed under the same license as the Logout Redirect package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Logout Redirect 1.0.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/logout-redirect\n"
+"POT-Creation-Date: 2011-01-05 08:36+0100\n"
+"PO-Revision-Date: 2011-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. #-#-#-#-#  logout-redirect.pot (Logout Redirect 1.0.1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: logout-redirect.php:76
+msgid "Logout Redirect"
+msgstr ""
+
+#: logout-redirect.php:79
+msgid "Redirect to"
+msgstr ""
+
+#: logout-redirect.php:83
+msgid "The URL users will be redirected to after logout."
+msgstr ""
+
+#: logout-redirect.php:111
+msgid ""
+"Please install the latest version of <a href=\"http://premium.wpmudev.org/"
+"project/update-notifications/\" title=\"Download Now &raquo;\">our free "
+"Update Notifications plugin</a> which helps you stay up-to-date with the "
+"most stable, secure versions of WPMU DEV themes and plugins. <a href="
+"\"http://premium.wpmudev.org/wpmu-dev/update-notifications-plugin-"
+"information/\">More information &raquo;</a>"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://premium.wpmudev.org/project/logout-redirect"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Redirects users to specified url after logging out - say goodbye to users "
+"logging out... and seeing the logout screen :)"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Andrew Billits, Ulrich Sossou"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://premium.wpmudev.org/"
+msgstr ""
