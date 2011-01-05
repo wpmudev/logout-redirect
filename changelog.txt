@@ -1,9 +1,16 @@
 Plugin Name: Logout Redirect
-Author: Andrew Billits
+Author: Andrew Billits, Ulrich Sossou
 
 Change Log:
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
+
+1.0.1 - 01/05/2011
+----------------------------------------------------------------------
+- WP 3.1+ compatibility.
+- Use PHP redirect instead of JavaScript.
+- Add option to network admin settings.
+- Internationalization.
 
 1.0.0 - 11/17/2008
 ----------------------------------------------------------------------
