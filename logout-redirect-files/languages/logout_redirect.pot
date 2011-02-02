@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Logout Redirect 1.0.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/logout-redirect\n"
-"POT-Creation-Date: 2011-01-05 08:36+0100\n"
+"POT-Creation-Date: 2011-02-02 11:23+0100\n"
 "PO-Revision-Date: 2011-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,19 +19,19 @@ msgstr ""
 
 #. #-#-#-#-#  logout-redirect.pot (Logout Redirect 1.0.1)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: logout-redirect.php:76
+#: logout-redirect.php:83 logout-redirect.php:111
 msgid "Logout Redirect"
 msgstr ""
 
-#: logout-redirect.php:79
+#: logout-redirect.php:86 logout-redirect.php:113
 msgid "Redirect to"
 msgstr ""
 
-#: logout-redirect.php:83
+#: logout-redirect.php:90
 msgid "The URL users will be redirected to after logout."
 msgstr ""
 
-#: logout-redirect.php:111
+#: logout-redirect.php:153
 msgid ""
 "Please install the latest version of <a href=\"http://premium.wpmudev.org/"
 "project/update-notifications/\" title=\"Download Now &raquo;\">our free "
