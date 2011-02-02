@@ -45,6 +45,7 @@ class Logout_Redirect {
 		add_filter( 'wp_logout', array( &$this, 'redirect' ) );
 		add_action( 'wpmu_options', array( &$this, 'network_option' ) );
 		add_action( 'update_wpmu_options', array( &$this, 'update_network_option' ) );
+		add_action( 'admin_init', array( &$this, 'add_settings_field' ) );
 
 		// load text domain
 		if ( defined( 'WPMU_PLUGIN_DIR' ) && file_exists( WPMU_PLUGIN_DIR . '/logout-redirect.php' ) ) {
@@ -58,7 +59,11 @@ class Logout_Redirect {
 	 * Redirect user on logout
 	 **/
 	function redirect() {
-		$logout_redirect_url = get_site_option( 'logout_redirect_url' );
+
+		if( $this->is_plugin_active_for_network( plugin_basename( __FILE__ ) ) )
+			$logout_redirect_url = get_site_option( 'logout_redirect_url' );
+		else
+			$logout_redirect_url = get_option( 'logout_redirect_url' );
 
 		if( !empty( $_REQUEST['redirect_to'] ) ) {
 			wp_safe_redirect( $_REQUEST['redirect_to'] );
@@ -72,6 +77,8 @@ class Logout_Redirect {
 	 * Network option
 	 **/
 	function network_option() {
+		if( ! $this->is_plugin_active_for_network( plugin_basename( __FILE__ ) ) )
+			return;
 		?>
 		<h3><?php _e( 'Logout Redirect', 'logout_redirect' ); ?></h3>
 		<table class="form-table">
@@ -92,6 +99,41 @@ class Logout_Redirect {
 	 **/
 	function update_network_option() {
 		update_site_option( 'logout_redirect_url', stripslashes( $_POST['logout_redirect_url'] ) );
+	}
+
+	/**
+	 * Add setting field for singlesite
+	 **/
+	function add_settings_field() {
+		if( $this->is_plugin_active_for_network( plugin_basename( __FILE__ ) ) )
+			return;
+
+		add_settings_section( 'logout_redirect_setting_section', __( 'Logout Redirect', 'logout_redirect' ), '__return_false', 'general' );
+
+		add_settings_field( 'logout_redirect_url', __( 'Redirect to', 'logout_redirect' ), array( &$this, 'site_option' ), 'general', 'logout_redirect_setting_section' );
+
+		register_setting( 'general', 'logout_redirect_url' );
+	}
+
+	/**
+	 * Setting field for singlesite
+	 **/
+	function site_option() {
+		echo '<input name="logout_redirect_url" type="text" id="logout_redirect_url" value="' . esc_attr( get_option( 'logout_redirect_url' ) ) . '" size="40" />';
+	}
+
+	/**
+	 * Verify if plugin is network activated
+	 **/
+	function is_plugin_active_for_network( $plugin ) {
+		if ( !is_multisite() )
+			return false;
+
+		$plugins = get_site_option( 'active_sitewide_plugins');
+		if ( isset($plugins[$plugin]) )
+			return true;
+
+		return false;
 	}
 
 }
