@@ -4,7 +4,7 @@ Plugin Name: Logout Redirect
 Plugin URI: http://premium.wpmudev.org/project/logout-redirect
 Description: Redirects users to specified url after logging out - say goodbye to users logging out... and seeing the logout screen :)
 Author: Andrew Billits, Ulrich Sossou
-Version: 1.0.3
+Version: 1.1
 Text Domain: logout_redirect
 Author URI: http://premium.wpmudev.org/
 WDP ID: 42
@@ -59,18 +59,58 @@ class Logout_Redirect {
 	 * Redirect user on logout
 	 **/
 	function redirect() {
-
-		if( $this->is_plugin_active_for_network( plugin_basename( __FILE__ ) ) )
-			$logout_redirect_url = get_site_option( 'logout_redirect_url' );
-		else
-			$logout_redirect_url = get_option( 'logout_redirect_url' );
-
-		if( !empty( $_REQUEST['redirect_to'] ) ) {
-			wp_safe_redirect( $_REQUEST['redirect_to'] );
-		} else {
-			wp_redirect( $logout_redirect_url );
-		}
+		$redirect_url = !empty($_REQUEST['redirect_to']) && !(defined('LOGOUT_REDIRECT_FORCED') && LOGOUT_REDIRECT_FORCED)
+			? $_REQUEST['redirect_to']
+			: $this->get_redirection_url()
+		;
+		wp_redirect($redirect_url);
 		exit();
+	}
+
+	private function _get_raw_redirection_url () {
+		return trim($this->is_plugin_active_for_network(plugin_basename(__FILE__))
+			? get_site_option('logout_redirect_url')
+			: get_option('logout_redirect_url')
+		);
+	}
+
+	private function _get_macros () {
+		return apply_filters('logout_redirect-defined_macros', array(
+			'BP_ACTIVITY_SLUG',
+			'BP_GROUPS_SLUG',
+			'BP_MEMBERS_SLUG',
+		));
+	}
+
+	private function _expand_macro ($macro) {
+		$value = false;
+		$user = wp_get_current_user();
+		switch ($macro) {
+			case 'BP_ACTIVITY_SLUG':
+				if (function_exists('bp_get_activity_root_slug')) $value = bp_get_activity_root_slug();
+				break;
+			case 'BP_GROUPS_SLUG':
+				if (function_exists('bp_get_groups_slug')) $value = bp_get_groups_slug();
+				break;
+			case 'BP_MEMBERS_SLUG':
+				if (function_exists('bp_get_members_slug')) $value = bp_get_members_slug();
+				break;
+		}
+		return apply_filters('logout_redirect-macro_value', $value, $macro);
+	}
+
+	function get_redirection_url () {
+		$raw = $this->_get_raw_redirection_url();
+		foreach ($this->_get_macros() as $macro) {
+			$value = $this->_expand_macro($macro);
+			if (!$value) continue;
+			$raw = preg_replace('/' . preg_quote($macro, '/') . '/', $value, $raw);
+		}
+		if (!preg_match('/^https?:\/\//', $url)) {
+			$protocol = @$_SERVER["HTTPS"] == 'on' ? 'https' : 'http';
+			$raw = site_url($raw, apply_filters('logout_redirect-url_protocol', $protocol));
+		}
+		return apply_filters('logout_redirect-redirection_url', $raw);
 	}
 
 	/**
@@ -79,15 +119,21 @@ class Logout_Redirect {
 	function network_option() {
 		if( ! $this->is_plugin_active_for_network( plugin_basename( __FILE__ ) ) )
 			return;
+		$url = $this->_get_raw_redirection_url();
 		?>
 		<h3><?php _e( 'Logout Redirect', 'logout_redirect' ); ?></h3>
 		<table class="form-table">
 			<tr valign="top">
 				<th scope="row"><label for="logout_redirect_url"><?php _e( 'Redirect to', 'logout_redirect' ) ?></label></th>
 				<td>
-					<input name="logout_redirect_url" type="text" id="logout_redirect_url" value="<?php echo esc_attr( get_site_option( 'logout_redirect_url' ) ) ?>" size="40" />
+					<input name="logout_redirect_url" type="text" id="logout_redirect_url" value="<?php echo esc_attr($url) ?>" size="40" />
 					<br />
 					<?php _e( 'The URL users will be redirected to after logout.', 'logout_redirect' ) ?>
+					<?php 
+					if (defined('BP_VERSION')) {
+						printf(__('You can use these macros for your redirection: %s', 'logout_redirect'), '<code>' . join('</code>, <code>', $this->_get_macros()) . '</code>');
+					} 
+					?>
 				</td>
 			</tr>
 		</table>
@@ -119,7 +165,11 @@ class Logout_Redirect {
 	 * Setting field for singlesite
 	 **/
 	function site_option() {
-		echo '<input name="logout_redirect_url" type="text" id="logout_redirect_url" value="' . esc_attr( get_option( 'logout_redirect_url' ) ) . '" size="40" />';
+		$url = $this->_get_raw_redirection_url();
+		echo '<input name="logout_redirect_url" type="text" id="logout_redirect_url" value="' . esc_attr($url) . '" size="40" />';
+		if (defined('BP_VERSION')) {
+			printf(__('You can use these macros for your redirection: %s', 'logout_redirect'), '<code>' . join('</code>, <code>', $this->_get_macros()) . '</code>');
+		} 
 	}
 
 	/**
