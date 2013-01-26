@@ -4,7 +4,7 @@ Plugin Name: Logout Redirect
 Plugin URI: http://premium.wpmudev.org/project/logout-redirect
 Description: Redirects users to specified url after logging out - say goodbye to users logging out... and seeing the logout screen :)
 Author: Andrew Billits, Ulrich Sossou
-Version: 1.1
+Version: 1.1.1
 Text Domain: logout_redirect
 Author URI: http://premium.wpmudev.org/
 WDP ID: 42
@@ -42,6 +42,7 @@ class Logout_Redirect {
 	 * PHP 5 constructor
 	 **/
 	function __construct() {
+		add_action('login_init', array($this, 'clean_redirect'));
 		add_filter( 'wp_logout', array( &$this, 'redirect' ) );
 		add_action( 'wpmu_options', array( &$this, 'network_option' ) );
 		add_action( 'update_wpmu_options', array( &$this, 'update_network_option' ) );
@@ -53,6 +54,17 @@ class Logout_Redirect {
 		} else {
 			load_plugin_textdomain( 'logout_redirect', false, dirname( plugin_basename( __FILE__ ) ) . '/logout-redirect-files/languages' );
 		}
+	}
+
+	function clean_redirect () {
+		if (defined('LOGOUT_REDIRECT_DEFAULT_WP_BEHAVIOR') && LOGOUT_REDIRECT_DEFAULT_WP_BEHAVIOR) return false;
+		$action = !empty($_REQUEST['action']) ? $_REQUEST['action'] : false;
+		if ('logout' != $action) return false;
+		if (is_user_logged_in()) return true; // User is still logged in, let WP do its job.
+
+		// We're still here, so we have a case of user already logged out, requesting logout.
+		// Suppress standard error and just redirect.
+		$this->redirect();
 	}
 
 	/**
@@ -106,7 +118,7 @@ class Logout_Redirect {
 			if (!$value) continue;
 			$raw = preg_replace('/' . preg_quote($macro, '/') . '/', $value, $raw);
 		}
-		if (!preg_match('/^https?:\/\//', $url)) {
+		if (!preg_match('/^https?:\/\//', $raw)) {
 			$protocol = @$_SERVER["HTTPS"] == 'on' ? 'https' : 'http';
 			$raw = site_url($raw, apply_filters('logout_redirect-url_protocol', $protocol));
 		}
