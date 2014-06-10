@@ -3,7 +3,7 @@
 Plugin Name: Logout Redirect
 Plugin URI: http://premium.wpmudev.org/project/logout-redirect
 Description: Redirects users to specified url after logging out - say goodbye to users logging out... and seeing the logout screen :)
-Author: Andrew Billits, Ulrich Sossou
+Author: WPMUDEV
 Version: 1.1.1
 Text Domain: logout_redirect
 Author URI: http://premium.wpmudev.org/
@@ -141,10 +141,10 @@ class Logout_Redirect {
 					<input name="logout_redirect_url" type="text" id="logout_redirect_url" value="<?php echo esc_attr($url) ?>" size="40" />
 					<br />
 					<?php _e( 'The URL users will be redirected to after logout.', 'logout_redirect' ) ?>
-					<?php 
+					<?php
 					if (defined('BP_VERSION')) {
 						printf(__('You can use these macros for your redirection: %s', 'logout_redirect'), '<code>' . join('</code>, <code>', $this->_get_macros()) . '</code>');
-					} 
+					}
 					?>
 				</td>
 			</tr>
@@ -181,7 +181,7 @@ class Logout_Redirect {
 		echo '<input name="logout_redirect_url" type="text" id="logout_redirect_url" value="' . esc_attr($url) . '" size="40" />';
 		if (defined('BP_VERSION')) {
 			printf(__('You can use these macros for your redirection: %s', 'logout_redirect'), '<code>' . join('</code>, <code>', $this->_get_macros()) . '</code>');
-		} 
+		}
 	}
 
 	/**
