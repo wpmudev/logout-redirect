@@ -200,7 +200,7 @@ class Logout_Redirect {
 
 }
 
-$logout_redirect =& new Logout_Redirect();
+$logout_redirect = new Logout_Redirect();
 
 /**
  * Show notification if WPMUDEV Update Notifications plugin is not installed
