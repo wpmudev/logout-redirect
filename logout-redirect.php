@@ -33,12 +33,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 class Logout_Redirect {
 
 	/**
-	 * PHP 4 constructor
-	 **/
-	function Logout_Redirect() {
-	}
-
-	/**
 	 * PHP 5 constructor
 	 **/
 	function __construct() {
