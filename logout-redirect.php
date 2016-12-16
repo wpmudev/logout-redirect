@@ -4,7 +4,7 @@ Plugin Name: Logout Redirect
 Plugin URI: http://premium.wpmudev.org/project/logout-redirect
 Description: Redirects users to specified url after logging out - say goodbye to users logging out... and seeing the logout screen :)
 Author: WPMUDEV
-Version: 1.1.2
+Version: 1.1.4
 Text Domain: logout_redirect
 Author URI: http://premium.wpmudev.org/
 WDP ID: 42
