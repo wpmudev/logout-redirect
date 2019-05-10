@@ -70,6 +70,6 @@ If you have installed the Logout Redirect plugin on a single site install of Wor
 
 You've redirected them to a much more useful page of your choosing such as your network homepage, your help and support site, or wherever you would like. In our example, they've been redirected to Edublogs. 
 
-![Edublogs Website](https://premium.wpmudev.org/wp-content/uploads/2008/11/edublogs.jpg "Edublogs Website")](https://premium.wpmudev.org/wp-content/uploads/2008/11/edublogs.jpg)
+![Edublogs Website](https://premium.wpmudev.org/wp-content/uploads/2008/11/edublogs.jpg "Edublogs Website")
 
 
